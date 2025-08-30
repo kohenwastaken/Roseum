@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "roseum:rosegold_block",
+    "roseum:raw_rosegold_block",
+    "roseum:rosegold_door",
+    "roseum:rosegold_trapdoor"
+  ]
+}

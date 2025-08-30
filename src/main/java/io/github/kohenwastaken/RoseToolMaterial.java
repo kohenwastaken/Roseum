@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public enum RoseToolMaterial implements ToolMaterial {
     // values: (miningLevel, durability, miningSpeed, attackDamage, enchantability, repair)
-    ROSEGOLD(3, 250, 6.0F, 2.0F, 15, () -> Ingredient.ofItems(RoseumItems.ROSEGOLD_INGOT));
+    ROSEGOLD(3, 750, 7.0F, 2.0F, 25, () -> Ingredient.ofItems(RoseumItems.ROSEGOLD_INGOT));
 
     private final int miningLevel;
     private final int durability;

@@ -19,9 +19,9 @@ public class RoseumModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator gen) {
-        gen.register(RoseumItems.ROSEGOLD_INGOT, Models.GENERATED);
-        gen.register(RoseumItems.ROSEGOLD_NUGGET, Models.GENERATED);
-        gen.register(RoseumItems.RAW_ROSEGOLD, Models.GENERATED);
+        gen.register(RoseumItems.ROSEGOLD_INGOT, net.minecraft.data.client.Models.GENERATED);
+        gen.register(RoseumItems.ROSEGOLD_NUGGET, net.minecraft.data.client.Models.GENERATED);
+        gen.register(RoseumItems.RAW_ROSEGOLD, net.minecraft.data.client.Models.GENERATED);
         gen.register(RoseumItems.ROSEGOLD_SWORD,   net.minecraft.data.client.Models.HANDHELD);
         gen.register(RoseumItems.ROSEGOLD_PICKAXE, net.minecraft.data.client.Models.HANDHELD);
         gen.register(RoseumItems.ROSEGOLD_AXE,     net.minecraft.data.client.Models.HANDHELD);

@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public enum RosegoldArmorMaterial implements ArmorMaterial {
-    // durability çarpanı, parça korumaları, enchant, equip ses, toughness, kb-resistance, tamir
-    ROSEGOLD("rosegold", 18,
-            makeProtection(2, 6, 5, 2), // helmet, chest, legs, boots
-            22,
+    // durability multiplier, armor values, enchant, equip sound, toughness, kb-resistance, repair item
+    ROSEGOLD("rosegold", 25,
+            makeProtection(3, 7, 5, 3),
+            30,
             SoundEvents.ITEM_ARMOR_EQUIP_GOLD,
-            0.0F, 0.0F,
+            1.0F, 0.0F,
             () -> Ingredient.ofItems(RoseumItems.ROSEGOLD_INGOT));
 
     // vanilla base durabilities
@@ -64,7 +64,7 @@ public enum RosegoldArmorMaterial implements ArmorMaterial {
     @Override public int getEnchantability() { return enchantability; }
     @Override public SoundEvent getEquipSound() { return equipSound; }
     @Override public Ingredient getRepairIngredient() { return repair.get(); }
-    @Override public String getName() { return Roseum.MOD_ID + ":rosegold"; } // armor texture: assets/roseum/textures/models/armor/rosegold_layer_*.png
+    @Override public String getName() { return Roseum.MOD_ID + ":rosegold"; }
     @Override public float getToughness() { return toughness; }
     @Override public float getKnockbackResistance() { return knockbackResistance; }
 }
