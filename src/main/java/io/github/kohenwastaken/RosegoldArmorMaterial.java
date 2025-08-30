@@ -37,7 +37,6 @@ public enum RosegoldArmorMaterial implements ArmorMaterial {
         return map;
     }
 
-    private final String name;
     private final int durabilityMultiplier;
     private final EnumMap<ArmorItem.Type,Integer> protection;
     private final int enchantability;
@@ -49,7 +48,7 @@ public enum RosegoldArmorMaterial implements ArmorMaterial {
     RosegoldArmorMaterial(String name, int durabilityMultiplier, EnumMap<ArmorItem.Type,Integer> protection,
                           int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance,
                           Supplier<Ingredient> repair) {
-        this.name = name;
+
         this.durabilityMultiplier = durabilityMultiplier;
         this.protection = protection;
         this.enchantability = enchantability;
