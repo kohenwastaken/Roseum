@@ -1,0 +1,23 @@
+{
+    "itemGroup.roseum.general": "Roseum",
+
+    "item.roseum.rosegold_ingot": "Rose Gold Ingot",
+    "item.roseum.rosegold_nugget": "Rose Gold Nugget",
+    "item.roseum.raw_rosegold": "Raw Rose Gold",
+
+    "block.roseum.rosegold_block": "Block of Rose Gold",
+    "block.roseum.raw_rosegold_block": "Block of Raw Rose Gold",
+    "block.roseum.rosegold_door": "Rose Gold Door",
+    "block.roseum.rosegold_trapdoor": "Rose Gold Trapdoor",
+
+    "item.roseum.rosegold_sword": "Rose Gold Sword",
+    "item.roseum.rosegold_pickaxe": "Rose Gold Pickaxe",
+    "item.roseum.rosegold_axe": "Rose Gold Axe",
+    "item.roseum.rosegold_shovel": "Rose Gold Shovel",
+    "item.roseum.rosegold_hoe": "Rose Gold Hoe",
+
+    "item.roseum.rosegold_helmet": "Rose Gold Helmet",
+    "item.roseum.rosegold_chestplate": "Rose Gold Chestplate",
+    "item.roseum.rosegold_leggings": "Rose Gold Leggings",
+    "item.roseum.rosegold_boots": "Rose Gold Boots"
+}

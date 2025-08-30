@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "textures": {
+    "bottom": "roseum:block/rosegold_door_bottom",
+    "top": "roseum:block/rosegold_door_top"
+  }
+}
