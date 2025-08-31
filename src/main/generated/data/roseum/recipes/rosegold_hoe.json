@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "roseum:rosegold_ingot"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "##",
+    " X",
+    " X"
+  ],
+  "result": {
+    "item": "roseum:rosegold_hoe"
+  },
+  "show_notification": true
+}

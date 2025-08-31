@@ -11,5 +11,6 @@ public class RoseumDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(RoseumLootTableProvider::new);
         pack.addProvider(RoseumRecipeProvider::new);
         pack.addProvider(RoseumBlockTagProvider::new);
+        pack.addProvider(RoseumItemTagProvider::new);
     }
 }

@@ -1,0 +1,35 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "roseum:alloy_mode",
+      "value": "C3_G1"
+    },
+    {
+      "condition": "roseum:alloy_output_count",
+      "value": 4
+    },
+    {
+      "condition": "roseum:alloy_enable_ingot"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "roseum:alloy_copper_ingots"
+    },
+    {
+      "tag": "roseum:alloy_copper_ingots"
+    },
+    {
+      "tag": "roseum:alloy_copper_ingots"
+    },
+    {
+      "tag": "roseum:alloy_gold_ingots"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "roseum:rosegold_ingot"
+  }
+}

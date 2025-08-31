@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_rosegold": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "roseum:raw_rosegold"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:rosegold_ingot_from_blasting_raw_rosegold"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_rosegold",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:rosegold_ingot_from_blasting_raw_rosegold"
+    ]
+  },
+  "sends_telemetry_event": false
+}

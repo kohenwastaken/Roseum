@@ -1,0 +1,57 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "roseum:alloy_mode",
+      "value": "C1_G3"
+    },
+    {
+      "condition": "roseum:alloy_output_count",
+      "value": 2
+    },
+    {
+      "condition": "roseum:alloy_enable_ingot"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_copper_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "roseum:alloy_copper_ingots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_gold_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "roseum:alloy_gold_ingots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "roseum:rosegold_alloy_c1_g3_ingot_2_ingotinputs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_copper_ingot",
+      "has_gold_ingot",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "roseum:rosegold_alloy_c1_g3_ingot_2_ingotinputs"
+    ]
+  },
+  "sends_telemetry_event": false
+}

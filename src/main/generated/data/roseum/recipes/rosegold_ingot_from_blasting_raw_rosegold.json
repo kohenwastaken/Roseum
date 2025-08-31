@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "rosegold_ingot",
+  "ingredient": {
+    "item": "roseum:raw_rosegold"
+  },
+  "result": "roseum:rosegold_ingot"
+}
