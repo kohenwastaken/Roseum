@@ -15,15 +15,10 @@
 	"icon": "assets/roseum/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"io.github.kohenwastaken.Roseum"
-		],
-		"client": [
-			"io.github.kohenwastaken.RoseumClient"
-		],
-		"fabric-datagen": [
-			"io.github.kohenwastaken.RoseumDataGenerator"
-		]
+		"main": ["io.github.kohenwastaken.Roseum"],
+		"client": ["io.github.kohenwastaken.RoseumClient"],
+		"fabric-datagen": ["io.github.kohenwastaken.RoseumDataGenerator"],
+		"modmenu": ["io.github.kohenwastaken.RoseumModMenu"]
 	},
 	"mixins": [
 		"roseum.mixins.json",
@@ -39,6 +34,7 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
+	  "modmenu": "*",
+	  "cloth-config2": "*"
 	}
 }
