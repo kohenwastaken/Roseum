@@ -1,5 +1,6 @@
 # Gradle / Loom
 .gradle/
+gradle.properties
 **/build/
 run/
 out/
