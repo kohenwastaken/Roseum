@@ -213,40 +213,9 @@ public class RoseumRecipeProvider extends FabricRecipeProvider {
                     b.offerTo(condExporter, Roseum.id(idStr));
                 }
 
-                // ---------- (optional) INGOT inputs -> RAW output ----------
-                {
-                    var b = ShapelessRecipeJsonBuilder
-                            .create(RecipeCategory.MISC, RoseumItems.RAW_ROSEGOLD, count)
-                            .criterion("has_copper_ingot", conditionsFromTag(RoseumItemTagProvider.ALLOY_COPPER_INGOTS))
-                            .criterion("has_gold_ingot",   conditionsFromTag(RoseumItemTagProvider.ALLOY_GOLD_INGOTS));
-
-                    for (int i = 0; i < copper; i++) b.input(RoseumItemTagProvider.ALLOY_COPPER_INGOTS);
-                    for (int i = 0; i < gold;   i++) b.input(RoseumItemTagProvider.ALLOY_GOLD_INGOTS);
-
-                    var condExporter = withConditions(
-                            exporter,
-                            new ConditionJsonProvider() {
-                                @Override public Identifier getConditionId() { return Roseum.id("alloy_mode"); }
-                                @Override public void writeParameters(JsonObject obj) { obj.addProperty("value", mode.name()); }
-                            },
-                            new ConditionJsonProvider() {
-                                @Override public Identifier getConditionId() { return Roseum.id("alloy_output_count"); }
-                                @Override public void writeParameters(JsonObject obj) { obj.addProperty("value", count); }
-                            },
-                            new ConditionJsonProvider() {
-                                @Override public Identifier getConditionId() { return Roseum.id("alloy_enable_ingot_to_raw"); }
-                                @Override public void writeParameters(JsonObject obj) { }
-                            }
-                    );
-
-                    String idStr = "rosegold_alloy_" + modeId + "_raw_" + count + "_ingotinputs";
-                    b.offerTo(condExporter, Roseum.id(idStr));
-                }
             }
         }
 
-        
-        
         
     }
 }

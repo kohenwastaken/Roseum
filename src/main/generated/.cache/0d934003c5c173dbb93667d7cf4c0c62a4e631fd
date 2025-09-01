@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-31T06:03:49.7312689	Roseum/Model Definitions
+// 1.20.1	2025-09-01T08:37:04.746656	Roseum/Model Definitions
 e0df80f72d3cdc45ca7942de8b21954c2fcb1cd4 assets\roseum\models\item\rosegold_block.json
 189737e65f9dcecb6f620df79c28da54d0eb05a0 assets\roseum\models\item\rosegold_nugget.json
 7f7ba2704a1b224a33201f3f81788f4eff73b494 assets\roseum\models\item\rosegold_pickaxe.json
@@ -9,8 +9,8 @@ e52610d10de32cf7101cc6664295f35f9819b7c1 assets\roseum\models\item\raw_rosegold.
 93a3a5f157b63b4e36f7f764fd6797c7b26da972 assets\roseum\models\block\rosegold_door_top_right.json
 c5d59909703190407eca8ceb692bdc829d818d74 assets\roseum\models\item\rosegold_boots.json
 db082f31fe75816dd4c68b5ed80e0f60d9d84910 assets\roseum\models\block\rosegold_door_bottom_right_open.json
-012503a39a97e41b232abd1c07d591618ab307a5 assets\roseum\blockstates\rosegold_door.json
 dd346fea16033810ef72e4045ac02b9d87cfd081 assets\roseum\models\block\rosegold_door_bottom_left.json
+012503a39a97e41b232abd1c07d591618ab307a5 assets\roseum\blockstates\rosegold_door.json
 0ab66ee2bde0985f2da17324b9d1382929d66962 assets\roseum\models\block\rosegold_door_bottom_left_open.json
 401ed5eee3d72126c7a333cf6fc6031a80dd5084 assets\roseum\models\block\rosegold_door_bottom_right.json
 1a8249a6018ac1f57854df3ae2b89ec74574fa7e assets\roseum\models\item\rosegold_ingot.json

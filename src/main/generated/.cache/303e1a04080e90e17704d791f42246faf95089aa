@@ -1,7 +1,7 @@
-// 1.20.1	2025-08-31T06:03:49.7302669	Roseum/Tags for minecraft:item
+// 1.20.1	2025-09-01T08:37:04.746656	Roseum/Tags for minecraft:item
 b1030a3d32c63b98b5506740a13d3a545c5f9063 data\roseum\tags\items\alloy_gold_ingots.json
 699bb1bfe7990521251881f2e200ee821ead76cd data\roseum\tags\items\alloy_copper_raw.json
 f9530949e9ebe89a25d63fb1b5f62c9ffba503d1 data\roseum\tags\items\alloy_gold_both.json
 59cfc6320c034391048472aaf59bbdff3f6866a8 data\roseum\tags\items\alloy_copper_both.json
-0140c403834e21308623168927f1bd151b5d918b data\roseum\tags\items\alloy_copper_ingots.json
 02bc5f790b6147ea1b9b4fdcab3da5fd0fdb45ba data\roseum\tags\items\alloy_gold_raw.json
+0140c403834e21308623168927f1bd151b5d918b data\roseum\tags\items\alloy_copper_ingots.json

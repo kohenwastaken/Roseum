@@ -28,11 +28,6 @@ public final class RoseumResourceConditions {
                     return k == RoseumConfig.InputKind.INGOT || k == RoseumConfig.InputKind.BOTH;
                 });
 
-        ResourceConditions.register(new Identifier(Roseum.MOD_ID, "alloy_enable_ingot_to_raw"),
-                json -> {
-                    var k = RoseumConfig.INSTANCE.inputKind;
-                    return (k == RoseumConfig.InputKind.INGOT || k == RoseumConfig.InputKind.BOTH)
-                            && RoseumConfig.INSTANCE.allowIngotToRaw;
-                });
+        
     }
 }

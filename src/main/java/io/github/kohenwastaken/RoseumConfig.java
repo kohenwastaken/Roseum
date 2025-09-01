@@ -17,7 +17,6 @@ public final class RoseumConfig {
     public Mode mode = Mode.C3_G1;
     public int outputCount = 1;                       // clamped to 1..4
     public InputKind inputKind = InputKind.BOTH;
-    public boolean allowIngotToRaw = false;           // if true: also add INGOT -> RAW alloy
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "roseum.json";
@@ -41,9 +40,6 @@ public final class RoseumConfig {
                     }
                     if (obj.has("outputCount")) {
                         INSTANCE.outputCount = obj.get("outputCount").getAsInt();
-                    }
-                    if (obj.has("allowIngotToRaw")) {
-                        INSTANCE.allowIngotToRaw = obj.get("allowIngotToRaw").getAsBoolean();
                     }
                 }
             }
@@ -80,14 +76,11 @@ public final class RoseumConfig {
                     "BOTH (any mix of ingots and raw ores)"
             ));
             help.add("outputCount_range", arr(1, 2, 3, 4));
-            help.addProperty("allowIngotToRaw",
-                    "When inputKind includes INGOT, also add an extra recipe that crafts RAW alloy from ingot inputs (default: false).");
             root.add("_help", help);
 
             root.addProperty("mode", INSTANCE.mode.name());
             root.addProperty("inputKind", INSTANCE.inputKind.name());
             root.addProperty("outputCount", INSTANCE.outputCount);
-            root.addProperty("allowIngotToRaw", INSTANCE.allowIngotToRaw);
 
             try (Writer w = Files.newBufferedWriter(file)) {
                 GSON.toJson(root, w);
