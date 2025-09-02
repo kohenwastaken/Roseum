@@ -1,6 +1,7 @@
 package io.github.kohenwastaken.mixin;
 
 import io.github.kohenwastaken.RoseumConfig;
+import io.github.kohenwastaken.RoseumConfig.TemplatePolicy;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -18,64 +19,61 @@ public abstract class SmithingScreenHandlerMixin {
 
     @Unique private ItemStack roseum$templateBefore = ItemStack.EMPTY;
 
-    // İmza ile hedefle: onTakeOutput(PlayerEntity, ItemStack)
-    @Inject(
-        method = "onTakeOutput(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)V",
-        at = @At("HEAD")
-    )
+    // Çıktıdan önce şablonu yakala
+    @Inject(method = "onTakeOutput(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)V",
+            at = @At("HEAD"))
     private void roseum$captureBefore(PlayerEntity player, ItemStack result, CallbackInfo ci) {
         ScreenHandler self = (ScreenHandler) (Object) this;
         this.roseum$templateBefore = self.getSlot(0).getStack().copy();
     }
 
-    @Inject(
-        method = "onTakeOutput(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)V",
-        at = @At("TAIL")
-    )
+    // Çıktıdan sonra davranışı uygula (vanilla tüketimi olduktan sonra)
+    @Inject(method = "onTakeOutput(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)V",
+            at = @At("TAIL"))
     private void roseum$applyTemplateBehavior(PlayerEntity player, ItemStack result, CallbackInfo ci) {
         if (roseum$templateBefore.isEmpty()) return;
 
-        // Sadece bizim tariflerin çıktılarında davran
+        // Sadece bizim sonuçlarda çalış
         var id = Registries.ITEM.getId(result.getItem());
         if (!"roseum".equals(id.getNamespace())) return;
 
-        String behavior;
-        String path = id.getPath();
-        if ("rosegold_ingot".equals(path)) {
-            behavior = RoseumConfig.INSTANCE.smithingAlloy_templateBehavior;
-        } else {
-            behavior = RoseumConfig.INSTANCE.smithingTransform_templateBehavior;
-        }
-        if ("consume".equalsIgnoreCase(behavior)) return;
+        final boolean isAlloy = "rosegold_ingot".equals(id.getPath());
+        TemplatePolicy policy = isAlloy
+                ? RoseumConfig.INSTANCE.smithingAlloy_templatePolicy
+                : RoseumConfig.INSTANCE.smithingTransform_templatePolicy;
 
-        ScreenHandler self = (ScreenHandler) (Object) this;
-        Slot templateSlot = self.getSlot(0);
-
-        if ("return".equalsIgnoreCase(behavior)) {
-            returnStack(player, templateSlot, roseum$templateBefore.copy());
-            return;
-        }
-
-        if ("damage".equalsIgnoreCase(behavior)) {
-            ItemStack dmg = roseum$templateBefore.copy();
-            dmg.setCount(1);
-            if (dmg.isDamageable()) {
-                dmg.setDamage(dmg.getDamage() + 1);
-                if (dmg.getDamage() >= dmg.getMaxDamage()) return; // kırıldı → tüketildi
+        // OFF: şablon gerekmiyor; varsa iade et. DO_NOT_CONSUME: iade et. DAMAGE: 1 hasar. CONSUME: hiçbir şey yapma.
+        switch (policy) {
+            case CONSUME -> { return; } // vanilla davranış
+            case OFF, DO_NOT_CONSUME -> {
+                ItemStack give = roseum$templateBefore.copy();
+                give.setCount(1); // yalnızca 1 adet iade
+                returnStack(player, ((ScreenHandler)(Object)this).getSlot(0), give);
             }
-            returnStack(player, templateSlot, dmg);
+            case DAMAGE -> {
+                ItemStack dmg = roseum$templateBefore.copy();
+                dmg.setCount(1);
+                if (dmg.isDamageable()) {
+                    dmg.setDamage(dmg.getDamage() + 1);
+                    if (dmg.getDamage() >= dmg.getMaxDamage()) {
+                        // kırıldı → tüketildi
+                        return;
+                    }
+                }
+                returnStack(player, ((ScreenHandler)(Object)this).getSlot(0), dmg);
+            }
         }
     }
 
     @Unique
     private static void returnStack(PlayerEntity player, Slot slot, ItemStack give) {
-        ItemStack inSlot = slot.getStack();
-        if (inSlot.isEmpty()) {
+        ItemStack in = slot.getStack();
+        if (in.isEmpty()) {
             slot.setStack(give);
             slot.markDirty();
-        } else if (ItemStack.canCombine(inSlot, give) && inSlot.getCount() < inSlot.getMaxCount()) {
-            inSlot.increment(1);
-            slot.setStack(inSlot);
+        } else if (ItemStack.canCombine(in, give) && in.getCount() < in.getMaxCount()) {
+            in.increment(give.getCount()); // 1
+            slot.setStack(in);
             slot.markDirty();
         } else {
             player.getInventory().insertStack(give);

@@ -1,6 +1,7 @@
 package io.github.kohenwastaken.recipe;
 
 import io.github.kohenwastaken.RoseumConfig;
+import io.github.kohenwastaken.RoseumConfig.TemplatePolicy;
 import io.github.kohenwastaken.RoseumSmithing;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
 
     // ---- CONFIG bazlı etkin gereklilik ----
     private boolean requireTemplateEffective() {
-        return RoseumConfig.INSTANCE.smithingAlloy_requireTemplate; // <-- DÜZELTİLDİ
+        return RoseumConfig.INSTANCE.smithingAlloy_templatePolicy != TemplatePolicy.OFF;
     }
 
     // ---- Recipe<Inventory> ----
@@ -48,8 +49,8 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
             if (t.isEmpty()) return false;
             if (!template.isEmpty() && !template.test(t)) return false;
         } else {
-            // slot boşsa sorun yok; doluysa yanlış template’i reddet
-            if (!t.isEmpty() && !template.isEmpty() && !template.test(t)) return false;
+        	// boş bırakabilirsin (şablon gerekmiyor); istersen yanlış şablonu reddetmek için:
+            //if (!t.isEmpty() && !template.isEmpty() && !template.test(t)) return false;
         }
 
         // SIRADAN BAĞIMSIZ: (bakır,altın) VEYA (altın,bakır)
@@ -77,7 +78,8 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
     @Override
     public boolean testTemplate(ItemStack stack) {
         boolean need = requireTemplateEffective();
-        if (stack.isEmpty()) return !need; // gerekliyse boş olamaz
+        if (!need) return true; // OFF
+        if (stack.isEmpty()) return false;
         return template.isEmpty() || template.test(stack);
     }
 

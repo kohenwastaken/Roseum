@@ -1,6 +1,9 @@
 {
   "fabric:load_conditions": [
     {
+      "condition": "roseum:crafting_alloy_enabled"
+    },
+    {
       "condition": "roseum:alloy_mode",
       "value": "C1_G3"
     },

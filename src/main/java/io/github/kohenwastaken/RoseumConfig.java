@@ -10,26 +10,32 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 public final class RoseumConfig {
-    // ===== Player-facing (crafting tarafı) =====
+
+    // ===== Crafting – Alloy (intended alanlar aynen kalsın) =====
     public enum Mode { C3_G1, C2_G2, C1_G3 }          // 3C+1G, 2C+2G, 1C+3G
     public enum InputKind { INGOT, RAW, BOTH }        // allowed inputs
 
     public Mode mode = Mode.C3_G1;
-    public int outputCount = 1;                       // crafting için, 1..4 clamp
+    public int outputCount = 1;                       // clamped to 1..4 (INTENDED)
     public InputKind inputKind = InputKind.BOTH;
 
-    // ===== Smithing davranışları (tek çıktı) =====
-    // alloy
-    public boolean smithingAlloy_requireTemplate = false;
-    public String  smithingAlloy_templateBehavior = "consume";  // consume | return | damage
-    // transform
-    public boolean smithingTransform_requireTemplate = true;
-    public String  smithingTransform_templateBehavior = "consume"; // consume | return | damage
+    // Sadece alloy crafting’i komple aç/kapa
+    public boolean enableCraftingAlloy = true;
+
+    // ===== Smithing – Tek politika enumu =====
+    public enum TemplatePolicy { OFF, DO_NOT_CONSUME, CONSUME, DAMAGE }
+
+    public boolean enableSmithingAlloy = true;
+    public boolean enableSmithingTransform = true;
+
+    public TemplatePolicy smithingAlloy_templatePolicy = TemplatePolicy.OFF;
+    public TemplatePolicy smithingTransform_templatePolicy = TemplatePolicy.CONSUME;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "roseum.json";
 
-    public static RoseumConfig INSTANCE = new RoseumConfig();
+    public static final RoseumConfig INSTANCE = new RoseumConfig();
+    private RoseumConfig() {}
 
     public static void load() {
         try {
@@ -38,7 +44,7 @@ public final class RoseumConfig {
                 try (Reader r = Files.newBufferedReader(file)) {
                     JsonObject obj = JsonParser.parseReader(r).getAsJsonObject();
 
-                    // ---- crafting (mevcut alanlar) ----
+                    // ---- crafting (INTENDED alanlar) ----
                     if (obj.has("mode")) {
                         String s = obj.get("mode").getAsString().toUpperCase(Locale.ROOT);
                         try { INSTANCE.mode = Mode.valueOf(s); } catch (IllegalArgumentException ignored) {}
@@ -51,27 +57,31 @@ public final class RoseumConfig {
                         INSTANCE.outputCount = obj.get("outputCount").getAsInt();
                     }
 
-                    // ---- smithing (yeni alanlar) ----
+                    // ---- yeni toggle’lar + politika ----
+                    if (obj.has("crafting") && obj.get("crafting").isJsonObject()) {
+                        JsonObject c = obj.getAsJsonObject("crafting");
+                        if (c.has("alloy") && c.get("alloy").isJsonObject()) {
+                            JsonObject a = c.getAsJsonObject("alloy");
+                            if (a.has("enabled")) INSTANCE.enableCraftingAlloy = a.get("enabled").getAsBoolean();
+                        }
+                    }
+
                     if (obj.has("smithing") && obj.get("smithing").isJsonObject()) {
                         JsonObject s = obj.getAsJsonObject("smithing");
 
                         if (s.has("alloy") && s.get("alloy").isJsonObject()) {
                             JsonObject a = s.getAsJsonObject("alloy");
-                            if (a.has("requireTemplate")) {
-                                INSTANCE.smithingAlloy_requireTemplate = a.get("requireTemplate").getAsBoolean();
-                            }
-                            if (a.has("templateBehavior")) {
-                                INSTANCE.smithingAlloy_templateBehavior = a.get("templateBehavior").getAsString();
+                            if (a.has("enabled")) INSTANCE.enableSmithingAlloy = a.get("enabled").getAsBoolean();
+                            if (a.has("templatePolicy")) {
+                                INSTANCE.smithingAlloy_templatePolicy = parsePolicy(a.get("templatePolicy").getAsString(), TemplatePolicy.OFF);
                             }
                         }
 
                         if (s.has("transform") && s.get("transform").isJsonObject()) {
                             JsonObject t = s.getAsJsonObject("transform");
-                            if (t.has("requireTemplate")) {
-                                INSTANCE.smithingTransform_requireTemplate = t.get("requireTemplate").getAsBoolean();
-                            }
-                            if (t.has("templateBehavior")) {
-                                INSTANCE.smithingTransform_templateBehavior = t.get("templateBehavior").getAsString();
+                            if (t.has("enabled")) INSTANCE.enableSmithingTransform = t.get("enabled").getAsBoolean();
+                            if (t.has("templatePolicy")) {
+                                INSTANCE.smithingTransform_templatePolicy = parsePolicy(t.get("templatePolicy").getAsString(), TemplatePolicy.CONSUME);
                             }
                         }
                     }
@@ -81,18 +91,17 @@ public final class RoseumConfig {
             Roseum.LOGGER.error("Failed to load Roseum config", e);
         }
 
-        // ---- sanitize ----
+        // sanitize
         INSTANCE.outputCount = Math.max(1, Math.min(4, INSTANCE.outputCount));
-        INSTANCE.smithingAlloy_templateBehavior      = sanitizeBehavior(INSTANCE.smithingAlloy_templateBehavior);
-        INSTANCE.smithingTransform_templateBehavior  = sanitizeBehavior(INSTANCE.smithingTransform_templateBehavior);
 
+        // pretty persist
         savePretty();
     }
 
-    private static String sanitizeBehavior(String raw) {
-        if (raw == null) return "consume";
-        String v = raw.toLowerCase(Locale.ROOT).trim();
-        return (v.equals("consume") || v.equals("return") || v.equals("damage")) ? v : "consume";
+    private static TemplatePolicy parsePolicy(String s, TemplatePolicy def) {
+        if (s == null) return def;
+        try { return TemplatePolicy.valueOf(s.trim().toUpperCase(Locale.ROOT)); }
+        catch (IllegalArgumentException ex) { return def; }
     }
 
     public static void savePretty() {
@@ -102,50 +111,40 @@ public final class RoseumConfig {
             Path file = dir.resolve(FILE_NAME);
 
             JsonObject root = new JsonObject();
-
             root.addProperty("_comment",
-                    "Roseum configuration. Edit values, then use /reload (singleplayer: re-enter world) "
-                  + "or restart the game. The _help fields are informational only.");
+                    "Roseum configuration. Edit values, then use /reload (singleplayer: re-enter world) or restart the game. The _help fields are informational only.");
 
             // ---- _help ----
             JsonObject help = new JsonObject();
-            help.add("mode_options", arr(
-                    "C3_G1 (3 copper + 1 gold)",
-                    "C2_G2 (2 copper + 2 gold)",
-                    "C1_G3 (1 copper + 3 gold)"
-            ));
-            help.add("inputKind_options", arr(
-                    "INGOT (only ingots)",
-                    "RAW (only raw ores)",
-                    "BOTH (any mix of ingots and raw ores)"
-            ));
+            help.add("mode_options", arr("C3_G1", "C2_G2", "C1_G3"));
+            help.add("inputKind_options", arr("INGOT", "RAW", "BOTH"));
             help.add("outputCount_range", arr(1, 2, 3, 4));
-
-            JsonObject smithHelp = new JsonObject();
-            smithHelp.add("templateBehavior_options", arr("consume", "return", "damage"));
-            smithHelp.addProperty("note",
-                    "Smithing has single output. 'return' puts the template back; 'damage' reduces durability or acts like 'return' if not damageable.");
-            help.add("smithing", smithHelp);
-
+            help.add("templatePolicy_options", arr("OFF", "DO_NOT_CONSUME", "CONSUME", "DAMAGE"));
             root.add("_help", help);
 
-            // ---- crafting alanları ----
+            // ---- crafting (INTENDED) ----
             root.addProperty("mode", INSTANCE.mode.name());
             root.addProperty("inputKind", INSTANCE.inputKind.name());
             root.addProperty("outputCount", INSTANCE.outputCount);
 
-            // ---- smithing alanları ----
+            // ---- sadece alloy crafting toggle’ı ----
+            JsonObject crafting = new JsonObject();
+            JsonObject craftingAlloy = new JsonObject();
+            craftingAlloy.addProperty("enabled", INSTANCE.enableCraftingAlloy);
+            crafting.add("alloy", craftingAlloy);
+            root.add("crafting", crafting);
+
+            // ---- smithing ----
             JsonObject smithing = new JsonObject();
 
             JsonObject alloy = new JsonObject();
-            alloy.addProperty("requireTemplate", INSTANCE.smithingAlloy_requireTemplate);
-            alloy.addProperty("templateBehavior", INSTANCE.smithingAlloy_templateBehavior);
+            alloy.addProperty("enabled", INSTANCE.enableSmithingAlloy);
+            alloy.addProperty("templatePolicy", INSTANCE.smithingAlloy_templatePolicy.name());
+            smithing.add("alloy", alloy);
 
             JsonObject transform = new JsonObject();
-            transform.addProperty("requireTemplate", INSTANCE.smithingTransform_requireTemplate);
-            transform.addProperty("templateBehavior", INSTANCE.smithingTransform_templateBehavior);
-
-            smithing.add("alloy", alloy);
+            transform.addProperty("enabled", INSTANCE.enableSmithingTransform);
+            transform.addProperty("templatePolicy", INSTANCE.smithingTransform_templatePolicy.name());
             smithing.add("transform", transform);
 
             root.add("smithing", smithing);

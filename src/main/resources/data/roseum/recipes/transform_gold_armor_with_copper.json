@@ -1,4 +1,5 @@
 {
+  "fabric:load_conditions": [{ "condition": "roseum:smithing_transform_enabled" }],
   "type": "roseum:smithing_transform",
   "require_template": true,
   "template": { "item": "roseum:alloy_template" },

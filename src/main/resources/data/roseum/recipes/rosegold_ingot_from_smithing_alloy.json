@@ -1,4 +1,5 @@
 {
+  "fabric:load_conditions": [{ "condition": "roseum:smithing_alloy_enabled" }],
   "type": "roseum:smithing_alloy",
   "require_template": false,
   "template": { "item": "roseum:alloy_template" },

@@ -2,6 +2,7 @@ package io.github.kohenwastaken.recipe;
 
 import io.github.kohenwastaken.RoseumSmithing;
 import io.github.kohenwastaken.RoseumConfig;
+import io.github.kohenwastaken.RoseumConfig.TemplatePolicy;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class RoseumSmithingTransformRecipe implements SmithingRecipe {
     public final Map<Item, Item> resultMap;// base item -> result item
     
     private boolean requireTemplateEffective() {
-        return RoseumConfig.INSTANCE.smithingTransform_requireTemplate;
+        return RoseumConfig.INSTANCE.smithingTransform_templatePolicy != TemplatePolicy.OFF;
     }
 
     public RoseumSmithingTransformRecipe(Identifier id, boolean requireTemplate, Ingredient template,
@@ -49,7 +50,8 @@ public class RoseumSmithingTransformRecipe implements SmithingRecipe {
             if (t.isEmpty()) return false;
             if (!template.isEmpty() && !template.test(t)) return false;
         } else {
-            if (!t.isEmpty() && !template.isEmpty() && !template.test(t)) return false;
+        	// boş bırakabilirsin (şablon gerekmiyor); istersen yanlış şablonu reddetmek için:
+            //if (!t.isEmpty() && !template.isEmpty() && !template.test(t)) return false;
         }
 
         if (!base.test(b) || !addition.test(a)) return false;
@@ -81,7 +83,8 @@ public class RoseumSmithingTransformRecipe implements SmithingRecipe {
     @Override
     public boolean testTemplate(ItemStack stack) {
         boolean need = requireTemplateEffective();
-        if (stack.isEmpty()) return !need;
+        if (!need) return true; // OFF
+        if (stack.isEmpty()) return false;
         return template.isEmpty() || template.test(stack);
     }
     @Override public boolean testBase(ItemStack s)     { return base.test(s); }

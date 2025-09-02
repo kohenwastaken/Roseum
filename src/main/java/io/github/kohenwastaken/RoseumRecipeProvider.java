@@ -162,6 +162,10 @@ public class RoseumRecipeProvider extends FabricRecipeProvider {
 
                     var condExporter = withConditions(
                             exporter,
+                            new ConditionJsonProvider() {
+                                @Override public Identifier getConditionId() { return Roseum.id("crafting_alloy_enabled"); }
+                                @Override public void writeParameters(JsonObject obj) { }
+                            },
                             // mode
                             new ConditionJsonProvider() {
                                 @Override public Identifier getConditionId() { return Roseum.id("alloy_mode"); }
@@ -195,6 +199,10 @@ public class RoseumRecipeProvider extends FabricRecipeProvider {
 
                     var condExporter = withConditions(
                             exporter,
+                            new ConditionJsonProvider() {
+                                @Override public Identifier getConditionId() { return Roseum.id("crafting_alloy_enabled"); }
+                                @Override public void writeParameters(JsonObject obj) { }
+                            },
                             new ConditionJsonProvider() {
                                 @Override public Identifier getConditionId() { return Roseum.id("alloy_mode"); }
                                 @Override public void writeParameters(JsonObject obj) { obj.addProperty("value", mode.name()); }

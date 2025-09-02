@@ -27,6 +27,18 @@ public final class RoseumResourceConditions {
                     var k = RoseumConfig.INSTANCE.inputKind;
                     return k == RoseumConfig.InputKind.INGOT || k == RoseumConfig.InputKind.BOTH;
                 });
+        
+        // Sadece alloy crafting’i komple aç/kapa
+        ResourceConditions.register(new Identifier(Roseum.MOD_ID, "crafting_alloy_enabled"),
+                json -> RoseumConfig.INSTANCE.enableCraftingAlloy);
+
+        // Smithing aç/kapa
+        ResourceConditions.register(new Identifier(Roseum.MOD_ID, "smithing_alloy_enabled"),
+                json -> RoseumConfig.INSTANCE.enableSmithingAlloy);
+
+        ResourceConditions.register(new Identifier(Roseum.MOD_ID, "smithing_transform_enabled"),
+                json -> RoseumConfig.INSTANCE.enableSmithingTransform);
+
 
         
     }
