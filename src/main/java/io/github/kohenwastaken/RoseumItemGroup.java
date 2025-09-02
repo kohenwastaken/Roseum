@@ -36,6 +36,8 @@ public final class RoseumItemGroup {
                     entries.add(RoseumItems.ROSEGOLD_CHESTPLATE);
                     entries.add(RoseumItems.ROSEGOLD_LEGGINGS);
                     entries.add(RoseumItems.ROSEGOLD_BOOTS);
+                    
+                    entries.add(RoseumItems.ALLOY_TEMPLATE);
                 })
                 .build();
 

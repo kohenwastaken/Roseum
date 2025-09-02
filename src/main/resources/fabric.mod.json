@@ -5,11 +5,12 @@
 	"name": "Roseum",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-		"Me!"
+		"Kohenwastaken"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/kohenwastaken/Roseum",
+		"issues": "https://github.com/kohenwastaken/Roseum/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/roseum/icon.png",
@@ -20,13 +21,7 @@
 		"fabric-datagen": ["io.github.kohenwastaken.RoseumDataGenerator"],
 		"modmenu": ["io.github.kohenwastaken.RoseumModMenu"]
 	},
-	"mixins": [
-		"roseum.mixins.json",
-		{
-			"config": "roseum.client.mixins.json",
-			"environment": "client"
-		}
-	],
+	"mixins": ["roseum.mixins.json"],
 	"depends": {
 		"fabricloader": ">=0.17.2",
 		"minecraft": "~1.20.1",

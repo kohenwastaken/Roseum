@@ -19,6 +19,8 @@ public class Roseum implements ModInitializer {
         RoseumItems.registerModItems();
         RoseumBlocks.registerModBlocks();
         RoseumItemGroup.register();
+        
+        RoseumSmithing.init();
 
         LOGGER.info("Roseum init");
     }

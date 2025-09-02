@@ -1,0 +1,13 @@
+{
+  "type": "roseum:smithing_transform",
+  "require_template": true,
+  "template": { "item": "roseum:alloy_template" },
+  "base":     { "tag": "roseum:gold_armor" },
+  "addition": { "tag": "c:copper_ingots" },
+  "result_map": {
+    "minecraft:golden_helmet":     { "item": "roseum:rosegold_helmet" },
+    "minecraft:golden_chestplate": { "item": "roseum:rosegold_chestplate" },
+    "minecraft:golden_leggings":   { "item": "roseum:rosegold_leggings" },
+    "minecraft:golden_boots":      { "item": "roseum:rosegold_boots" }
+  }
+}

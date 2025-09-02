@@ -1,0 +1,8 @@
+{
+  "type": "roseum:smithing_alloy",
+  "require_template": false,
+  "template": { "item": "roseum:alloy_template" },
+  "base":    { "tag": "c:copper_ingots" },
+  "addition":{ "tag": "c:gold_ingots"   },
+  "result":  { "item": "roseum:rosegold_ingot" }
+}

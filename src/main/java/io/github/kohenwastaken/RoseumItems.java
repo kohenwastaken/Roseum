@@ -1,5 +1,6 @@
 package io.github.kohenwastaken;
 
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.HoeItem;
@@ -10,6 +11,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 
 public class RoseumItems {
 
@@ -43,7 +45,15 @@ public class RoseumItems {
             new ArmorItem(RosegoldArmorMaterial.ROSEGOLD, ArmorItem.Type.LEGGINGS, new Item.Settings()));
     public static final Item ROSEGOLD_BOOTS = register("rosegold_boots",
             new ArmorItem(RosegoldArmorMaterial.ROSEGOLD, ArmorItem.Type.BOOTS, new Item.Settings()));
-
+    
+    // ===== template =====
+    public static final Item ALLOY_TEMPLATE = register("alloy_template",
+            new Item(new FabricItemSettings()
+                    .maxCount(16)                // stacksize
+                    .rarity(Rarity.UNCOMMON)	// maybe RARE
+                    .maxDamage(128))); 
+    
+    
     // ===== registration helpers =====
     private static Item register(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(Roseum.MOD_ID, name), item);
