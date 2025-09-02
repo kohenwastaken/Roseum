@@ -20,7 +20,7 @@ public final class RoseumConfig {
     public InputKind inputKind = InputKind.BOTH;
 
     // Sadece alloy crafting’i komple aç/kapa
-    public boolean enableCraftingAlloy = true;
+    public boolean enableCraftingAlloy = false;
 
     // ===== Smithing – Tek politika enumu =====
     public enum TemplatePolicy { OFF, DO_NOT_CONSUME, CONSUME, DAMAGE }
@@ -29,7 +29,7 @@ public final class RoseumConfig {
     public boolean enableSmithingTransform = true;
 
     public TemplatePolicy smithingAlloy_templatePolicy = TemplatePolicy.OFF;
-    public TemplatePolicy smithingTransform_templatePolicy = TemplatePolicy.CONSUME;
+    public TemplatePolicy smithingTransform_templatePolicy = TemplatePolicy.OFF;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "roseum.json";
