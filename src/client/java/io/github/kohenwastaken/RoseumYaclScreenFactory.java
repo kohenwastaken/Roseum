@@ -64,6 +64,13 @@ public final class RoseumYaclScreenFactory {
                         .formatValue(i -> Text.literal(Integer.toString(i))))
                 .available(cfg.enableCraftingAlloy)
                 .build();
+        
+        craftingAlloyEnabled.addListener((opt, event) -> {
+            boolean on = opt.pendingValue(); // YACL 3.6+ - yeni API
+            modeOpt.setAvailable(on);
+            inputOpt.setAvailable(on);
+            countOpt.setAvailable(on);
+        });
 
         OptionGroup craftingGroup = OptionGroup.createBuilder()
                 .name(Text.literal("Crafting – Alloy"))
@@ -108,6 +115,11 @@ public final class RoseumYaclScreenFactory {
                         }))
                 .available(cfg.enableSmithingAlloy)
                 .build();
+        
+        smithAlloyEnabled.addListener((opt, event) -> {
+            boolean on = opt.pendingValue();
+            smithAlloyPolicy.setAvailable(on);
+        });
 
         OptionGroup smithAlloyGroup = OptionGroup.createBuilder()
                 .name(Text.literal("Smithing – Alloy (1 Copper + 1 Gold → 1 Rose Gold Ingot)"))
@@ -145,6 +157,11 @@ public final class RoseumYaclScreenFactory {
                         }))
                 .available(cfg.enableSmithingTransform)
                 .build();
+        
+        smithTransEnabled.addListener((opt, event) -> {
+            boolean on = opt.pendingValue();
+            smithTransPolicy.setAvailable(on);
+        });
 
         OptionGroup smithTransformGroup = OptionGroup.createBuilder()
                 .name(Text.literal("Smithing – Transform (Gold Armor + Copper → Rose Gold Armor)"))
