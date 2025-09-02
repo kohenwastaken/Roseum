@@ -3,6 +3,5 @@
   "package": "io.github.kohenwastaken.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": ["SmithingScreenHandlerMixin"],
-  "client": [],
   "injectors": { "defaultRequire": 1 }
 }
