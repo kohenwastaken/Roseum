@@ -6,7 +6,7 @@ import net.minecraft.recipe.Ingredient;
 import java.util.function.Supplier;
 
 public enum RoseToolMaterial implements ToolMaterial {
-    // values: (miningLevel, durability, miningSpeed, attackDamage, enchantability, repair)
+    // values: (miningLevel, durability, miningSpeed, attackDamage, enchantability, repair item)
     ROSEGOLD(3, 750, 7.0F, 2.0F, 25, () -> Ingredient.ofItems(RoseumItems.ROSEGOLD_INGOT));
 
     private final int miningLevel;

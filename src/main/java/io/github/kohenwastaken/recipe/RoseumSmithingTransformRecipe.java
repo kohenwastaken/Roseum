@@ -20,10 +20,10 @@ import java.util.Map;
 public class RoseumSmithingTransformRecipe implements SmithingRecipe {
     private final Identifier id;
     public final boolean requireTemplate;
-    public final Ingredient template;      // optional
-    public final Ingredient base;          // #roseum:gold_armor
-    public final Ingredient addition;      // #c:copper_ingots
-    public final Map<Item, Item> resultMap;// base item -> result item
+    public final Ingredient template;
+    public final Ingredient base;
+    public final Ingredient addition;
+    public final Map<Item, Item> resultMap;
     
     private boolean requireTemplateEffective() {
         return RoseumConfig.INSTANCE.smithingTransform_templatePolicy != TemplatePolicy.OFF;
@@ -50,7 +50,7 @@ public class RoseumSmithingTransformRecipe implements SmithingRecipe {
             if (t.isEmpty()) return false;
             if (!template.isEmpty() && !template.test(t)) return false;
         } else {
-        	// boş bırakabilirsin (şablon gerekmiyor); istersen yanlış şablonu reddetmek için:
+        	//for refusing wrong template enable this
             //if (!t.isEmpty() && !template.isEmpty() && !template.test(t)) return false;
         }
 
@@ -83,7 +83,7 @@ public class RoseumSmithingTransformRecipe implements SmithingRecipe {
     @Override
     public boolean testTemplate(ItemStack stack) {
         boolean need = requireTemplateEffective();
-        if (!need) return true; // OFF
+        if (!need) return true;
         if (stack.isEmpty()) return false;
         return template.isEmpty() || template.test(stack);
     }

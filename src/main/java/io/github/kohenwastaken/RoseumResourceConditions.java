@@ -7,15 +7,12 @@ public final class RoseumResourceConditions {
     private RoseumResourceConditions() {}
 
     public static void register() {
-        // recipe mode (C3_G1 / C2_G2 / C1_G3)
         ResourceConditions.register(new Identifier(Roseum.MOD_ID, "alloy_mode"),
                 json -> RoseumConfig.INSTANCE.mode.name().equalsIgnoreCase(json.getAsJsonObject().get("value").getAsString()));
 
-        // output count (1..4)
         ResourceConditions.register(new Identifier(Roseum.MOD_ID, "alloy_output_count"),
                 json -> RoseumConfig.INSTANCE.outputCount == json.getAsJsonObject().get("value").getAsInt());
 
-        // enable blocks by input policy
         ResourceConditions.register(new Identifier(Roseum.MOD_ID, "alloy_enable_raw"),
                 json -> {
                     var k = RoseumConfig.INSTANCE.inputKind;
@@ -28,11 +25,9 @@ public final class RoseumResourceConditions {
                     return k == RoseumConfig.InputKind.INGOT || k == RoseumConfig.InputKind.BOTH;
                 });
         
-        // Sadece alloy crafting’i komple aç/kapa
         ResourceConditions.register(new Identifier(Roseum.MOD_ID, "crafting_alloy_enabled"),
                 json -> RoseumConfig.INSTANCE.enableCraftingAlloy);
 
-        // Smithing aç/kapa
         ResourceConditions.register(new Identifier(Roseum.MOD_ID, "smithing_alloy_enabled"),
                 json -> RoseumConfig.INSTANCE.enableSmithingAlloy);
 

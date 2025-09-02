@@ -51,7 +51,7 @@ public class RoseumItems {
             new Item(new FabricItemSettings()
                     .maxCount(16)                // stacksize
                     .rarity(Rarity.UNCOMMON)	// maybe RARE
-                    .maxDamage(128))); 
+                    .maxDamage(32))); 
     
     
     // ===== registration helpers =====

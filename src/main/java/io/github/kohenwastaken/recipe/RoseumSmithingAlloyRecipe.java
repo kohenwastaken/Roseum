@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 
 public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
     private final Identifier id;
-    public final boolean requireTemplate;   // JSON’daki varsayılan (bilgi amaçlı)
-    public final Ingredient template;       // opsiyonel
+    public final boolean requireTemplate;   // JSON's defaults:
+    public final Ingredient template;       // optional
     public final Ingredient base;           // #c:copper_ingots
     public final Ingredient addition;       // #c:gold_ingots
     public final ItemStack result;          // rosegold_ingot (1)
@@ -32,7 +32,7 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
         this.result = result;
     }
 
-    // ---- CONFIG bazlı etkin gereklilik ----
+    // ---- CONFIG ----
     private boolean requireTemplateEffective() {
         return RoseumConfig.INSTANCE.smithingAlloy_templatePolicy != TemplatePolicy.OFF;
     }
@@ -49,11 +49,11 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
             if (t.isEmpty()) return false;
             if (!template.isEmpty() && !template.test(t)) return false;
         } else {
-        	// boş bırakabilirsin (şablon gerekmiyor); istersen yanlış şablonu reddetmek için:
+        	//for refusing wrong template enable this
             //if (!t.isEmpty() && !template.isEmpty() && !template.test(t)) return false;
         }
 
-        // SIRADAN BAĞIMSIZ: (bakır,altın) VEYA (altın,bakır)
+        // required for order fix
         boolean combo1 = base.test(b) && addition.test(a);
         boolean combo2 = base.test(a) && addition.test(b);
         return combo1 || combo2;
@@ -74,7 +74,6 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
         return list;
     }
 
-    // ---- SmithingRecipe zorunluları ----
     @Override
     public boolean testTemplate(ItemStack stack) {
         boolean need = requireTemplateEffective();
@@ -83,7 +82,7 @@ public class RoseumSmithingAlloyRecipe implements SmithingRecipe {
         return template.isEmpty() || template.test(stack);
     }
 
-    // QoL: iki input slotu da bakır VEYA altını kabul etsin
-    @Override public boolean testBase(ItemStack s)     { return base.test(s) || addition.test(s); }     // <-- DÜZELTİLDİ
-    @Override public boolean testAddition(ItemStack s) { return base.test(s) || addition.test(s); }     // <-- DÜZELTİLDİ
+    // QoL
+    @Override public boolean testBase(ItemStack s)     { return base.test(s) || addition.test(s); }
+    @Override public boolean testAddition(ItemStack s) { return base.test(s) || addition.test(s); }
 }

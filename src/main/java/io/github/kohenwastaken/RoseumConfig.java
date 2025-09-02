@@ -11,25 +11,38 @@ import java.util.Locale;
 
 public final class RoseumConfig {
 
-    // ===== Crafting – Alloy (intended alanlar aynen kalsın) =====
-    public enum Mode { C3_G1, C2_G2, C1_G3 }          // 3C+1G, 2C+2G, 1C+3G
-    public enum InputKind { INGOT, RAW, BOTH }        // allowed inputs
+    // ===== Alloy Crafting =====
+    public enum Mode { C3_G1, C2_G2, C1_G3 }
+    public enum InputKind { INGOT, RAW, BOTH }
 
-    public Mode mode = Mode.C3_G1;
-    public int outputCount = 1;                       // clamped to 1..4 (INTENDED)
-    public InputKind inputKind = InputKind.BOTH;
-
-    // Sadece alloy crafting’i komple aç/kapa
-    public boolean enableCraftingAlloy = false;
-
-    // ===== Smithing – Tek politika enumu =====
+    // ===== Smithing =====
     public enum TemplatePolicy { OFF, DO_NOT_CONSUME, CONSUME, DAMAGE }
 
-    public boolean enableSmithingAlloy = true;
-    public boolean enableSmithingTransform = true;
+    // ===== DEFAULT VALUES =====
+    public static final boolean DEF_enableCraftingAlloy = false;
+    public static final Mode DEF_mode = Mode.C3_G1;
+    public static final InputKind DEF_inputKind = InputKind.BOTH;
+    public static final int DEF_outputCount = 1;
 
-    public TemplatePolicy smithingAlloy_templatePolicy = TemplatePolicy.OFF;
-    public TemplatePolicy smithingTransform_templatePolicy = TemplatePolicy.OFF;
+    public static final boolean DEF_enableSmithingAlloy = true;
+    public static final TemplatePolicy DEF_smithingAlloy_templatePolicy = TemplatePolicy.OFF;
+
+    public static final boolean DEF_enableSmithingTransform = true;
+    public static final TemplatePolicy DEF_smithingTransform_templatePolicy = TemplatePolicy.OFF;
+    
+
+    public boolean enableCraftingAlloy = DEF_enableCraftingAlloy;
+    public Mode mode = DEF_mode;
+    public InputKind inputKind = DEF_inputKind;
+    public int outputCount = DEF_outputCount;  // clamped to 1..4 (INTENDED)
+    
+    public boolean enableSmithingAlloy = DEF_enableSmithingAlloy;
+    public TemplatePolicy smithingAlloy_templatePolicy = DEF_smithingAlloy_templatePolicy;
+    
+    public boolean enableSmithingTransform = DEF_enableSmithingTransform;
+    public TemplatePolicy smithingTransform_templatePolicy = DEF_smithingTransform_templatePolicy;
+    
+    
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "roseum.json";
@@ -44,7 +57,7 @@ public final class RoseumConfig {
                 try (Reader r = Files.newBufferedReader(file)) {
                     JsonObject obj = JsonParser.parseReader(r).getAsJsonObject();
 
-                    // ---- crafting (INTENDED alanlar) ----
+                    // ---- crafting ----
                     if (obj.has("mode")) {
                         String s = obj.get("mode").getAsString().toUpperCase(Locale.ROOT);
                         try { INSTANCE.mode = Mode.valueOf(s); } catch (IllegalArgumentException ignored) {}
@@ -57,7 +70,6 @@ public final class RoseumConfig {
                         INSTANCE.outputCount = obj.get("outputCount").getAsInt();
                     }
 
-                    // ---- yeni toggle’lar + politika ----
                     if (obj.has("crafting") && obj.get("crafting").isJsonObject()) {
                         JsonObject c = obj.getAsJsonObject("crafting");
                         if (c.has("alloy") && c.get("alloy").isJsonObject()) {
@@ -122,12 +134,12 @@ public final class RoseumConfig {
             help.add("templatePolicy_options", arr("OFF", "DO_NOT_CONSUME", "CONSUME", "DAMAGE"));
             root.add("_help", help);
 
-            // ---- crafting (INTENDED) ----
+            // ---- crafting ----
             root.addProperty("mode", INSTANCE.mode.name());
             root.addProperty("inputKind", INSTANCE.inputKind.name());
             root.addProperty("outputCount", INSTANCE.outputCount);
 
-            // ---- sadece alloy crafting toggle’ı ----
+            // ---- alloy crafting ----
             JsonObject crafting = new JsonObject();
             JsonObject craftingAlloy = new JsonObject();
             craftingAlloy.addProperty("enabled", INSTANCE.enableCraftingAlloy);

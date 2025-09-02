@@ -15,19 +15,16 @@ public class RoseumModMenu implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
-            // YACL yüklü mü?
         	
         	boolean hasYacl = FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3")
                     || FabricLoader.getInstance().isModLoaded("yacl");
         	
         	if (!hasYacl) {
-                // Basit bir bilgi ekranı göster
                 return new InfoScreen(parent, Text.literal(
                         "Roseum: This config screen requires YetAnotherConfigLib.\n" +
                         "Please install YACL to edit settings in-game."));
             }
             try {
-                // YACL ekranını ayrı sınıftan reflection ile çağır
                 Class<?> factory = Class.forName("io.github.kohenwastaken.RoseumYaclScreenFactory");
                 return (Screen) factory.getMethod("create", Screen.class).invoke(null, parent);
             } catch (Throwable t) {
@@ -37,7 +34,6 @@ public class RoseumModMenu implements ModMenuApi {
         };
     }
 
-    // Küçük “bilgi” ekranı (YACL yoksa)
     static class InfoScreen extends Screen {
         private final Screen parent;
         protected InfoScreen(Screen parent, Text title) {

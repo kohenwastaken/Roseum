@@ -19,7 +19,7 @@ public abstract class SmithingScreenHandlerMixin {
 
     @Unique private ItemStack roseum$templateBefore = ItemStack.EMPTY;
 
-    // Çıktıdan önce şablonu yakala
+    // catching template before output
     @Inject(method = "onTakeOutput(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)V",
             at = @At("HEAD"))
     private void roseum$captureBefore(PlayerEntity player, ItemStack result, CallbackInfo ci) {
@@ -27,13 +27,13 @@ public abstract class SmithingScreenHandlerMixin {
         this.roseum$templateBefore = self.getSlot(0).getStack().copy();
     }
 
-    // Çıktıdan sonra davranışı uygula (vanilla tüketimi olduktan sonra)
+    // apply template policy after output (after vanilla consume)
     @Inject(method = "onTakeOutput(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;)V",
             at = @At("TAIL"))
     private void roseum$applyTemplateBehavior(PlayerEntity player, ItemStack result, CallbackInfo ci) {
         if (roseum$templateBefore.isEmpty()) return;
 
-        // Sadece bizim sonuçlarda çalış
+        // work with our results
         var id = Registries.ITEM.getId(result.getItem());
         if (!"roseum".equals(id.getNamespace())) return;
 
@@ -42,12 +42,11 @@ public abstract class SmithingScreenHandlerMixin {
                 ? RoseumConfig.INSTANCE.smithingAlloy_templatePolicy
                 : RoseumConfig.INSTANCE.smithingTransform_templatePolicy;
 
-        // OFF: şablon gerekmiyor; varsa iade et. DO_NOT_CONSUME: iade et. DAMAGE: 1 hasar. CONSUME: hiçbir şey yapma.
         switch (policy) {
-            case CONSUME -> { return; } // vanilla davranış
+            case CONSUME -> { return; } // vanilla behavior
             case OFF, DO_NOT_CONSUME -> {
                 ItemStack give = roseum$templateBefore.copy();
-                give.setCount(1); // yalnızca 1 adet iade
+                give.setCount(1); // give back only one
                 returnStack(player, ((ScreenHandler)(Object)this).getSlot(0), give);
             }
             case DAMAGE -> {
@@ -56,7 +55,7 @@ public abstract class SmithingScreenHandlerMixin {
                 if (dmg.isDamageable()) {
                     dmg.setDamage(dmg.getDamage() + 1);
                     if (dmg.getDamage() >= dmg.getMaxDamage()) {
-                        // kırıldı → tüketildi
+                        // broken → consumed
                         return;
                     }
                 }
