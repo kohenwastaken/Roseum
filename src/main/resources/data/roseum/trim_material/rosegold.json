@@ -1,0 +1,9 @@
+{
+  "asset_name": "rosegold",
+  "description": {
+    "color": "#e8a6d5",
+    "translate": "trim_material.roseum.rosegold"
+  },
+  "ingredient": "roseum:rosegold_ingot",
+  "item_model_index": 0.07
+}

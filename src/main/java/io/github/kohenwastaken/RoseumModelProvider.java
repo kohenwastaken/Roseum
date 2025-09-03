@@ -26,11 +26,5 @@ public class RoseumModelProvider extends FabricModelProvider {
         gen.register(RoseumItems.ROSEGOLD_AXE,     net.minecraft.data.client.Models.HANDHELD);
         gen.register(RoseumItems.ROSEGOLD_SHOVEL,  net.minecraft.data.client.Models.HANDHELD);
         gen.register(RoseumItems.ROSEGOLD_HOE,     net.minecraft.data.client.Models.HANDHELD);
-        gen.register(RoseumItems.ROSEGOLD_HELMET,     net.minecraft.data.client.Models.GENERATED);
-        gen.register(RoseumItems.ROSEGOLD_CHESTPLATE, net.minecraft.data.client.Models.GENERATED);
-        gen.register(RoseumItems.ROSEGOLD_LEGGINGS,   net.minecraft.data.client.Models.GENERATED);
-        gen.register(RoseumItems.ROSEGOLD_BOOTS,      net.minecraft.data.client.Models.GENERATED);
-
-
     }
 }
